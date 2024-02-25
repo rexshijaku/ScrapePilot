@@ -198,8 +198,38 @@ It contains a type, which shows what type the expected recipe result is. See the
   } // The Specified Output
 }
 ```
+
+### Support
+For general questions about ScrapePilot, tweet at @rexshijaku or write me an email at rexhepshijaku@gmail.com.
+
+### Author
+##### Rexhep Shijaku
+ - Email : rexhepshijaku@gmail.com
+ - Twitter : https://twitter.com/rexshijaku
+
 ### Acknowledgments
 Special thanks to <a href='https://www.tm-tracking.org/'>Trygg Mat Tracking (TMT)</a> for supporting this project.
+
+Contributing
+We welcome contributions from everyone! Here are a few ways you can help improve this project:
+
+Reporting Bugs: If you encounter any bugs or unexpected behavior, please open an issue on GitHub. Be sure to include as much detail as possible, including steps to reproduce the issue.
+
+Suggesting Enhancements: Have an idea for a new feature or improvement? Feel free to open an issue to discuss it, or even better, submit a pull request with your proposed changes.
+
+Submitting Pull Requests: Found a bug and know how to fix it? Want to add a new feature? Pull requests are welcome! Please follow the guidelines below:
+
+Fork the repository and create your branch from the main.
+Make your changes, ensuring they follow our coding conventions and style guide.
+Write tests for any new functionality and ensure all tests pass.
+Update the documentation to reflect your changes if necessary.
+Open a pull request, describing the changes you've made.
+
+Documentation: Improving the documentation is always appreciated. If you notice areas where the documentation could be clearer or more comprehensive, please let us know or submit a pull request with your proposed changes.
+
+Spread the Word: If you find this project useful, consider sharing it with others who might benefit from it. You can also star the repository on GitHub to show your support.
+
+By contributing to this project, you agree to abide by the Code of Conduct. Thank you for helping to make this project better!
 
 ### License
 MIT License
