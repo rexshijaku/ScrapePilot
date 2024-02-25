@@ -185,7 +185,7 @@ And in the recipe:
 
 
 #### The Output
-It contains a type, which shows what type the expected recipe result is. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> . The Output also has the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), variables, or independent functions as well.
+It contains a type, which shows what type the expected recipe result is. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> The Output also has the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), variables, or independent functions as well.
 
 ```js
 {
@@ -210,7 +210,7 @@ For general questions about ScrapePilot, tweet at @rexshijaku or write me an ema
 ### Acknowledgments
 Special thanks to <a href='https://www.tm-tracking.org/'>Trygg Mat Tracking (TMT)</a> for supporting this project.
 
-Contributing
+### Contributing
 We welcome contributions from everyone! Here are a few ways you can help improve this project:
 
 Reporting Bugs: If you encounter any bugs or unexpected behavior, please open an issue on GitHub. Be sure to include as much detail as possible, including steps to reproduce the issue.
