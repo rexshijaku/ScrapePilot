@@ -3,7 +3,7 @@
 This library helps to scrape web content in a guided and user-friendly way. It aims to simplify repetitive and complex scraping tasks by combining and abstracting the functionality offered by HTMLAgilityPack and Selenium with the extended C# I/O tasks.
 
 ## How it works
-Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its own instructions. An Instruction represents a single unit of tasks and is made of Arguments. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> which alleviates the recipe creation process.
+Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its own instructions. An Instruction represents a single unit of tasks and is made of Arguments. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> (<a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot.Client'>the ScrapePilot.Client Project</a>) which alleviates the recipe creation process.
 
 ### Usage
 ```csharp
@@ -33,7 +33,7 @@ The App Constructor of the Scrape Pilot may take an IConfigurationSection as a p
 
 ### The Main Recipe Structure
 
-The Main Recipe is the recipe that contains all subrecipes. It has a store and variables that are used globally.
+The Main Recipe is the recipe that contains subrecipes. It has a global store and variables.
 
 #### The Store
 The store is an in-memory storage that contains the results of the storable instructions. In technical terms, it is an implementation of a key-value C# Dictionary<String, String>, where the key corresponds to the 'name' property of the 'store' object. Once a value is stored, it can be used in subsequent steps throughout the script. However, certain instructions, such as basic tab changes, are void and may not necessitate storing their results.
@@ -199,7 +199,7 @@ It contains a type, which shows what type the expected recipe result is. See the
 }
 ```
 ### Acknowledgments
-Special thanks to Trygg Mat Tracking (TMT) for supporting this project.
+Special thanks to <a href='https://www.tm-tracking.org/'>Trygg Mat Tracking (TMT)</a> for supporting this project.
 
 ### License
 MIT License
