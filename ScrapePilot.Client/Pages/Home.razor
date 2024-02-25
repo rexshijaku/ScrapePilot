@@ -1,0 +1,195 @@
+﻿@page "/"
+@using System.Reflection
+@using System.Text.Json
+@using ScrapePilot.Models.Recipe
+@using ScrapePilot.Client.Helpers
+@using ScrapePilot.Client.Models
+
+<SmartValuePicker @ref="@SmartValuePickerVar" StateAndResultJSONReload="StateAndResultJSONReload"> </SmartValuePicker>
+
+<div style="height:100px; width:100%; background:#333; " class="mb-4">
+
+</div>
+
+<div class="p-3 fw-bold" style="font-size:20px;">
+   <a href="@Helpers.Constants.PROJECTS_GITHUB_URL" target="_blank" style="text-decoration:none; padding:0px;"> Scrape Pilot </a> Recipe Creator  
+</div>
+
+<div class="row sp-main-container">
+    <div class="col-md-6 sp-left-container">
+        <div class="row">
+            <div class="row">
+                @if (RecipeMain != null)
+                {
+                    @for (int i = 0; i < RecipeMain.recipes.Count; i++)
+                    {
+                        <Recipe ThisRecipe="@RecipeMain.recipes[i]"
+                             RecipeNo="@(i+1)"
+                             StateAndResultJSONReload="StateAndResultJSONReload"
+                             OnRecipeRemoved="RemoveRecipe"
+                             SmartValuePicker="SmartValuePickerVar"
+                        >
+                        </Recipe>
+                    }
+                }
+            </div>
+
+            <div class="row p-0">
+                <button @onclick="AddRecipe" class="btn btn-primary fw-bold text-uppercase">
+                    @if (RecipeMain != null && RecipeMain.recipes.Count > 0)
+                    {
+                        <span>Add Another Recipe</span>
+                    }
+                    else
+                    {
+                        <span>Create a Recipe</span>
+                    }
+                </button>
+            </div>
+
+            <div class="row the-output-section mt-2" style="border:1px solid gray;">
+                <div class="row the-upper-part p-0 pt-2">
+                    <div class="col-md-3">
+                        <label class="p-2">Output Type</label>
+                        <select class="form-select" style="width:100%;" @onchange="OutputTypeChanged">
+                            @foreach (Models.MemberModel output_type in recipeOutputTypes)
+                            {
+                                <option value="@output_type.Name">@output_type.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row the-lower-part mt-2 pb-4">
+
+                    <div class="row p-2">
+                        <button class="btn btn-primary fw-bold text-uppercase"
+                                @onclick="AddOutputValueFragment" style="width:100%;">
+                            Add An Output Fragment
+                        </button>   
+                    </div>
+
+                    @{
+                        List<string> storeItems = Utility.GetTheStore();
+                    }
+
+                    @if (RecipeMain != null)
+                    {
+                        @for (int i = 0; i < RecipeMain.output.value.Count; i++)
+                        {
+                            int currentIndex = i; // Create a local variable to capture the current index
+
+                            if (!selectedIndexes.ContainsKey(currentIndex))
+                            {
+                                selectedIndexes[currentIndex] = false;
+                            }
+
+                            <div class="row mt-4">
+                               
+                                <div class="col-md-4 p-2">
+                                    <input placeholder="write your own" class="form-control"
+                                           disabled="@(SmartValuePickerVar.PropValueWasSetUsingSmartValuePicker(RecipeMain.output.value[currentIndex]))"
+                                           type="text" value="@RecipeMain.output.value[i]"
+                                           @oninput="@((newValue) => UpdateListStoreList(newValue, currentIndex))" />
+                                </div>
+@* 
+ *@
+                                <div class="col-md-4 p-2">
+                                    <button class="btn btn-primary"
+                                            @onclick="@(e => SmartValuePickerVar.SetTheRefOfArray(RecipeMain.output.value, currentIndex).OpenValuePicker())">
+                                        Use Value Picker
+                                    </button>
+                                </div>
+ 
+                                <div class="col-md-1 p-2">
+                                    <button class="btn btn-danger"
+                                            @onclick="@(e => SmartValuePickerVar.ClearValue(RecipeMain.output.value, currentIndex))">
+                                        Clear
+                                    </button>
+                                </div>
+
+                                <div class="col-md-1 p-2">
+                                    <button class="btn btn-danger"
+                                            @onclick="@(e => SmartValuePickerVar.RemoveValue(RecipeMain.output.value, currentIndex))">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-6 sp-right-container">
+        <div class="row p-2">
+            The Recipe Result
+        </div>
+        <div class="row the-recipe-result">
+            <pre id="the-recipe-result-value">@formattedJson;</pre>
+        </div>
+        <div class="row pt-4">
+            <button class="btn btn-primary text-uppercase fw-bold" @onclick="CopyTheResult">Copy the result</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer pt-2">
+    <p> Author: <a href="@Helpers.Constants.AUTHORS_GITHUB_URL" target="_blank" style="color:white;"> @Helpers.Constants.AUTHOR_NAME </a></p>
+</div>
+
+<style>
+    .the-output-section {
+        margin-top: 15px;
+        border-top: 2px solid black;
+        padding: 15px;
+    }
+
+    .the-recipe-result {
+        width: 100%;
+        height: 600px;
+        overflow: scroll;
+        border: 1px solid black;
+    }
+
+    .row {
+        padding: 0px;
+        margin: 0px;
+    }
+    .footer{
+        text-align:center;
+        clear: both;
+        padding:10px;
+        padding-top:25px;
+        height: 40px;
+        margin-top: 200px;
+        width: 100%;
+        background: #333;
+        color: white;
+        font-family: "Cabin Condensed", sans-serif;
+        padding-top: 2px;
+        font-size: 15px;
+    }
+</style>
+
+<script>
+    window.copyText = function () {
+        var text = document.getElementById('the-recipe-result-value').innerText;
+        // since navigator not available in production!
+        // https://stackoverflow.com/questions/71873824/copy-text-to-clipboard-cannot-read-properties-of-undefined-reading-writetext
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            console.log('Copied to clipboard!', text);
+        } catch (err) {
+            console.error('Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+    }
+</script>

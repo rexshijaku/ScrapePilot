@@ -1,0 +1,25 @@
+﻿{
+  "recipes": [
+    {
+      "use": {
+        "driver": "AppDriver"
+      },
+      "instructions": [
+        {
+          "type": "download_a_file",
+          "arguments": {
+            "From": "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_PDF.pdf",
+            "To": [ "#output_path", "scrape-pilot-sample_pdf.pdf" ]
+          },
+          "store": {
+            "name": "#downloaded_file_path"
+          }
+        }
+      ]
+    }
+  ],
+  "output": {
+    "value": [ "#downloaded_file_path" ],
+    "type": "local_url"
+  }
+}

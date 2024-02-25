@@ -1,0 +1,74 @@
+﻿@using System.Reflection
+@using ScrapePilot.Attributes
+@using ScrapePilot.Client.Helpers
+
+<ModalDialog @ref="@ModalDialog" Title="Select Argument Value" OnCloseToInvoke="OnClose">
+    <div class="row mb-4">
+        <h3>Smart Value Picker</h3>
+        <hr>
+        <p>
+            You can pick a value to add to the input. It will be processed automatically
+        </p>
+        <div>
+
+            <div class="row p-2">
+                <label>
+                    <input name="option" type="radio" value="@STORE_KEY"
+                           checked="@(SelectedType.Equals(STORE_KEY))" @onchange="OnTypeDropdownChange" /> STORE KEYS
+                </label>
+                <label>
+
+                    <select class="form-select" @onchange="(e) => OnValueDropdownChanged(e, STORE_KEY)" disabled="@(!SelectedType.Equals(STORE_KEY))">
+                        <option value="-1">Raw Value</option>
+                        @for (int s = 0; s < StoreKeys.Count; s++)
+                        {
+                            <option value="@StoreKeys[s]"> @StoreKeys[s] </option>
+                        }
+                    </select>
+                </label>
+            </div>
+
+            @if (ShowDependentFn)
+            {
+                <div class="row p-2">
+                    <label>
+                        <input name="option" type="radio" value="@DEPENDENT_FUNCTION"
+                               checked="@(SelectedType.Equals(DEPENDENT_FUNCTION))" @onchange="OnTypeDropdownChange" /> DEPENDENT FUNCTION
+                    </label>
+                    <label>
+                        <select class="form-select" @onchange="(e) => OnValueDropdownChanged(e, DEPENDENT_FUNCTION)" disabled="@(!SelectedType.Equals(DEPENDENT_FUNCTION))">
+                            @foreach (var item in DependentFunctions)
+                            {
+                                <option value="@item.Key"> @item.Value [Uses the Value of This Field: @DependentFnField]</option>
+                            }
+                        </select>
+                    </label>
+                </div>
+            }
+            
+            @if (ShowInDependentFn)
+            {
+                <div class="row p-2">
+                    <label>
+                        <input name="option" type="radio" value="@INDEPENDENT_FUNCTION"
+                               checked="@(SelectedType.Equals(INDEPENDENT_FUNCTION))" @onchange="OnTypeDropdownChange" /> INDEPENDENT FUNCTION
+                    </label>
+                    <label>
+
+                        <select class="form-select" @onchange="(e) => OnValueDropdownChanged(e, INDEPENDENT_FUNCTION)" disabled="@(!SelectedType.Equals(INDEPENDENT_FUNCTION))">
+                            @foreach (var item in InDependentFunctions)
+                            {
+                                <option value="@item.Key"> @item.Value </option>
+                            }
+                        </select>
+                    </label>
+                </div>
+            }
+        </div>
+        <button class="btn btn-primary mt-4 text-uppercase fw-bold"
+                @onclick="@(e => OnSaved())" style="width:50%; margin:auto; font-size:18px;">
+            Set
+        </button>
+    </div>
+</ModalDialog>
+

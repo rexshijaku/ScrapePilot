@@ -1,0 +1,36 @@
+﻿{
+  "recipes": [
+    {
+      "use": {
+        "driver": "Selenium",
+        "configs": {
+          "Headless": false
+        }
+      },
+      "instructions": [
+        {
+          "type": "nav_to",
+          "arguments": {
+            "Url": "https://freetestdata.com/document-files/pdf/"
+          }
+        },
+        {
+          "type": "perform_click",
+          "arguments": {
+            "On": "(//a[contains(@class, \u0022elementor-button\u0022)])[1]"
+          }
+        },
+        {
+          "type": "wait_file_download",
+          "arguments": {
+            "Src": "Free_Test_Data_100KB_PDF.pdf"
+          }
+        }
+      ]
+    }
+  ],
+  "output": {
+    "value": [ "#output_path", "Free_Test_Data_100KB_PDF.pdf" ],
+    "type": "LOCAL_URL"
+  }
+}

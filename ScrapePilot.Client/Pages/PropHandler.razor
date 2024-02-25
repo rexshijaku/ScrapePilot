@@ -1,0 +1,182 @@
+﻿@using System.Reflection
+@using ScrapePilot.Attributes
+@using ScrapePilot.Client.Helpers
+@using ScrapePilot.Client.Models
+
+<div class="mb-2 p-2">
+    @if (Nullable.GetUnderlyingType(property.PropertyType) == typeof(bool) || property.PropertyType == typeof(bool))
+    {
+        // Handle boolean property
+        <input class="form-check-input" type="checkbox" name="@property.Name" checked="@property.GetValue(TheClassInstance)"
+               @onchange="@((newValue) => SetAnyValue(TheClassInstance, property.Name, newValue.Value))" />
+    }
+    else if (property.PropertyType == typeof(string))
+    {
+        bool hasAttribute = Attribute.IsDefined(property, typeof(InstructionArgumentDetails));
+        object[] attributes = property.GetCustomAttributes(typeof(InstructionArgumentDetails), true);
+
+        AttributeType atype = ((InstructionArgumentDetails)attributes[0])._attributeType;
+
+        if (hasAttribute && atype == AttributeType.ListItemSingle)
+        {
+            string[] values = ReflectionHelper.GetListSourceAsArray(((InstructionArgumentDetails)attributes[0])._listSource);
+            <select class="form-control" @onchange="(args) => { SetAnyValue(TheClassInstance, property.Name, args.Value); }">
+                <option value="">Select</option>
+                @for (int k = 0; k < values.Length; k++)
+                {
+                    <option value="@values[k]">@values[k]</option>
+                }
+            </select>
+        }
+        else if (atype == AttributeType.StoreKeyOrRawValue)
+        {
+            var val = property.GetValue(TheClassInstance) ?? string.Empty;
+            <div class="row">
+                <div class="col-md-6 p-2">
+                    <input class="form-control" type="text" value="@val"
+                           disabled="@(SmartValuePicker.PropValueWasSetUsingSmartValuePicker(val))"
+                           @oninput="@((newValue) => SetAnyValue(TheClassInstance, property.Name, newValue.Value))" />
+                </div>
+                <div class="col-md-3 p-2">
+                    <button class="btn btn-primary"
+                            @onclick="@(e => SmartValuePicker.SetFnParam(TheClassInstance, property.Name).OpenValuePicker())">
+                        Use Value Picker
+                    </button>
+                </div>
+                <div class="col-md-3 p-2">
+                    <button class="btn btn-danger"
+                            @onclick="@(e =>  SmartValuePicker.ResetTheValue(TheClassInstance, property.Name) )">
+                        Clear
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            // Handle string property
+            <input class="form-control" type="text" value=""
+                   @oninput="@((newValue) => SetAnyValue(TheClassInstance, property.Name, newValue.Value))" />
+        }
+    }
+    else if (property.PropertyType == typeof(int))
+    {
+        // Handle integer property
+        <input class="form-control" type="number" name="@property.Name"
+               @oninput="@((newValue) => SetAnyValue(TheClassInstance, property.Name, Helpers.ValueHelper.GetIntOrNull(newValue.Value)))" />
+
+    }
+    else if (property.PropertyType == typeof(double))
+    {
+        // Handle double property
+        <input class="form-control" type="number" name="@property.Name"
+               @oninput="@((newValue) => SetAnyValue(TheClassInstance, property.Name, Helpers.ValueHelper.GetDoubleOrNull(newValue.Value)))" />
+
+    }
+    else if (property.PropertyType == typeof(DateTime))
+    {
+        // Handle DateTime property
+    }
+    @* else if (type?.IsEnum)
+    {
+    // Handle enum property
+    } *@
+    @* else if (typeof(MyCustomType).IsAssignableFrom(type))
+    {
+    // Handle instances of MyCustomType or its subclasses
+    } *@
+    else
+    {
+        bool hasAttribute = Attribute.IsDefined(property, typeof(InstructionArgumentDetails));
+        object[] attributes = property.GetCustomAttributes(typeof(InstructionArgumentDetails), true);
+        AttributeType atype = ((InstructionArgumentDetails)attributes[0])._attributeType;
+
+        if (atype == AttributeType.ListItemMulti)
+        {
+            string[] values = ReflectionHelper.GetListSourceAsArray(((InstructionArgumentDetails)attributes[0])._listSource);
+            <select class="form-select" multiple @onchange="(args) => { SetItem(args,
+                                                (List<string>?) property.GetValue(TheClassInstance),
+                                                TheClassInstance, property.Name); }">
+                <option value="">Select</option>
+                @for (int k = 0; k < values.Length; k++)
+                {
+                    <option value="@values[k]">@values[k]</option>
+                }
+            </select>
+        }
+        else if (atype == AttributeType.ListAsRawOrFromStore)
+        {
+            List<string>? myListValue = (List<string>?)property.GetValue(TheClassInstance);
+            if (myListValue == null)
+            {
+                property.SetValue(TheClassInstance, Activator.CreateInstance(property.PropertyType));
+                myListValue = (List<string>?)property.GetValue(TheClassInstance);
+            }
+
+            @for (int i = 0; i < myListValue.Count; i++)
+            {
+                int index = i;
+                <div class="row p-0 mb-2">
+                    <div class="col-md-6 pt-2">
+                        <input class="form-control" type="text" value="@myListValue[index]" disabled="@(SmartValuePicker.PropValueWasSetUsingSmartValuePicker(myListValue[index]))"
+                               @oninput="@((newValue) => SetAValue(myListValue, index, newValue.Value.ToString(), property,TheClassInstance))" />
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <button class="btn btn-primary"
+                                @onclick="@(e => SmartValuePicker.SetObject(TheClassInstance, property.Name).SetTheRefOfArray(myListValue, index).OpenValuePicker())">
+                            Use Value Picker
+                        </button>
+                    </div>
+                    <div class="col-md-2 p-2">
+                        <button class="btn btn-danger"
+                                @onclick="@(e => RemoveValue(myListValue, index, property, TheClassInstance))">
+                            x
+                        </button>
+                    </div>
+                </div>
+            }
+            <div class="row text-center p-2">
+                <button class="btn btn-primary" @onclick="@(e => AddValue(myListValue, String.Empty, property, TheClassInstance))">Add A Fragment</button>
+            </div>
+        }
+        else if (atype == AttributeType.Composite)
+        {
+            if (hasAttribute && Attribute.IsDefined(property.PropertyType, typeof(InstructionDetails)))
+            {
+                <Arguments ObjectType="property.PropertyType" Object="property.GetValue(TheClassInstance)"
+                           StateAndResultJSONReload="StateAndResultJSONReload" SmartValuePicker="SmartValuePicker">
+                </Arguments>
+            }
+        }
+        else if (atype == AttributeType.CompositeList)
+        {
+            // A property such as List<T>
+
+            if (property.PropertyType.IsGenericType &&
+            property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                Type listType = property.PropertyType.GetGenericArguments()[0];
+
+                // Get the type of elements in the list
+                foreach (object listItem in property.GetValue(TheClassInstance))
+                {
+                    <Arguments ObjectType="listType" Object="listItem"
+                               StateAndResultJSONReload="StateAndResultJSONReload"
+                               SmartValuePicker="SmartValuePicker">
+                    </Arguments>
+                    <hr />
+                    <br />
+                    <br />
+                }
+
+                <div class="row text-center p-2">
+                    <button class="btn btn-primary"
+                            @onclick="@(e => AddItemToListTypeProperty(TheClassInstance, property, listType))">
+                        Add More
+                    </button>
+                </div>
+            }
+
+        }
+    }
+</div>
+

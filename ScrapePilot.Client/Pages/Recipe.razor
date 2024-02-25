@@ -1,0 +1,120 @@
+﻿@using System.Reflection
+
+<div class="row the-recipe mb-2">
+
+    <div class="row the-recipe-info">
+        #recipe @RecipeNo
+    </div>
+
+    <div class="row pb-2">
+        <div class="col-md-3">
+            <label class="p-2">Driver Type</label>
+            <select class="form-select" @onchange="DriverTypeChanged">
+                @foreach (string driver_type in DriverTypes)
+                {
+                    if (ThisRecipe.use.driver == driver_type)
+                    {
+                        <option value="@driver_type" selected>@driver_type</option>
+                    }
+                    else
+                    {
+                        <option value="@driver_type">@driver_type</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row the-driver-configs">
+        @if (ThisRecipe.use.configs != null && ThisRecipe.use.configs.GetType().GetProperties().Length > 0)
+        {
+            <div class="col-md-8 p-2 pb-0">
+                <label class="p-4 pt-1 pb-2 the-recipe-configs-label"> Configs </label>
+                <br />
+                <br />
+                @foreach (PropertyInfo property in ThisRecipe.use.configs.GetType().GetProperties())
+                {
+                    <label class="p-2">@property.Name</label>
+                    <PropHandler TheClassInstance="ThisRecipe.use.configs" 
+                                 property="property"
+                                 SmartValuePicker="SmartValuePicker"
+                                 StateAndResultJSONReload="StateAndResultJSONReload">
+                    </PropHandler>
+                    <br />
+                }
+            </div>
+        }
+    </div>
+
+    <div class="the-instruction-container p-2">
+        <div class="row the-instruction-container-label pb-2">
+            <span class="fw-bolder">Instructions</span>
+        </div>
+        @for (int i = 0; i < ThisRecipe.instructions.Count; i++)
+        {
+            int index = i + 1;
+            int indexU = i;
+
+            <Instruction TheIstruction="@ThisRecipe.instructions[indexU]"
+                         InstructionNo="@(index)"
+                         SelectedDriver="@DefaultSelectedDriver"
+                         StateAndResultJSONReload="StateAndResultJSONReload"
+                         SmartValuePicker="SmartValuePicker"
+                         OnInstructionRemove="RemoveAnInstruction">
+            </Instruction>
+        }
+    </div>
+
+    <div class="row text-right pb-4">
+        <div class="col-md-3 p-2">
+            <button class="btn btn-primary the-add-instruct-btn text-uppercase fw-bold" style="font-size:12px;" @onclick="AddAnInstruction">
+                Add an Instrution
+            </button>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-2">
+        <button class="btn btn-danger fw-bold text-uppercase" style="background:#ea7e7e;" @onclick="RemoveThisRecipe">Remove This Recipe</button>
+    </div>
+
+</div>
+
+<style>
+    .the-recipe {
+        height: auto;
+        min-height: 100px;
+        border: 2px dashed black;
+    }
+
+    .the-recipe-info {
+        border: 2px solid #d56262;
+        background: #ea7e7e;
+        font-weight: 500;
+    }
+
+    .the-recipe-configs-label {
+        border-bottom: 1px solid black;
+    }
+
+    .the-driver-configs {
+        border-top: 2px solid black;
+        margin: 0px;
+        margin-top: 4px;
+    }
+
+    .the-instruction-container {
+        border-top: 2px solid black;
+        margin-top: 5px;
+        height: auto;
+    }
+
+    .the-instruction-container-label {
+        border-bottom: 2px solid black;
+    }
+
+    .the-add-instruct-btn {
+        width: 100%;
+        padding: 0px;
+        height: 35px;
+    }
+</style>

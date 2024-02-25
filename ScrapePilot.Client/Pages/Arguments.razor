@@ -1,0 +1,31 @@
+﻿@using System.Reflection
+
+@if (ObjectType != null)
+{
+    @foreach (PropertyInfo property in ObjectType.GetProperties())
+    {
+        Tuple<string, string> nameDescription
+            = Helpers.ReflectionHelper
+                     .GetInstructionArgumentsNameDescription(property);
+        <tr>
+            <td>
+                <Tooltip Text="@nameDescription.Item2">
+                    @if (@nameDescription.Item1.Length > Helpers.Constants.ARGUMENTS_MAX_STRING_LENGTH)
+                    {
+                        @nameDescription.Item1.Substring(0, Helpers.Constants.ARGUMENTS_MAX_STRING_LENGTH)
+                    }
+                    else
+                    {
+                        @nameDescription.Item1 
+                    }
+                </Tooltip>
+            </td>
+            <td>
+                <PropHandler TheClassInstance="Object"
+                             StateAndResultJSONReload="StateAndResultJSONReload"
+                             SmartValuePicker="SmartValuePicker"
+                             property="property"> </PropHandler>
+            </td>
+        </tr>
+    }
+}

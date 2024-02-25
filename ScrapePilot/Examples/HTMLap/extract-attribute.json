@@ -1,0 +1,34 @@
+﻿{
+  "recipes": [
+    {
+      "use": {
+        "driver": "HTMLap"
+      },
+      "instructions": [
+        {
+          "type": "load",
+          "arguments": {
+            "Url": "https://freetestdata.com/document-files/pdf/"
+          }
+        },
+        {
+          "type": "extract_attr",
+          "arguments": {
+            "Attr": "href",
+            "From": "(//a[contains(@class, \u0022elementor-button\u0022)])[1]",
+            "Contraints": [ "must_be_csv_pdf" ]
+          },
+          "store": {
+            "name": "#extracted_file_path"
+          }
+        }
+      ]
+    }
+  ],
+  "output": {
+    "value": [
+      "#extracted_file_path"
+    ],
+    "type": "WEB_URL"
+  }
+}

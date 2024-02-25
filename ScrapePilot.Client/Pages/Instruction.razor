@@ -1,0 +1,125 @@
+﻿@using System.Reflection
+@using System.Text.Json
+
+<div class="row the-instruction mb-2 mt-2">
+    <div class="row">
+        <div class="col-md-3 pt-1 pb-1">
+            <span class="fw-bold">
+                #instruction @InstructionNo
+            </span>
+        </div>
+        <div class="offset-8 col-md-1 p-0">
+            <button class="float-end mt-1 btn btn-danger the-btn-remove" @onclick="RemoveThisInstruction">
+                X
+            </button>
+        </div>
+    </div>
+
+    <div class="row the-instruction-type mb-2">
+        <div class="col-md-4 p-0">
+            <select class="form-select" @onchange="InstructionOptionChanged">
+                <option value="">Select a Type</option>
+                @foreach (var t in instructions)
+                {
+                    if (t.Value == TheIstruction.type)
+                    {
+                        <option selected value="@t.Value">@t.Key</option>
+                    }
+                    else
+                    {
+                        <option value="@t.Value">@t.Key</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    @if (TheIstruction != null && !string.IsNullOrEmpty(TheIstruction?.type))
+    {
+        <div class="the-instructions-arguments">
+            <label class="fw-bold">
+                #arguments
+            </label>
+            <table class="the-config-table">
+                <Arguments Object="TheIstruction.arguments"
+                           ObjectType="TheIstruction.arguments.GetType()"
+                           SmartValuePicker="SmartValuePicker"
+                           StateAndResultJSONReload="StateAndResultJSONReload">
+                </Arguments>
+            </table>
+
+        </div>
+
+        Tuple<bool, string?> storeItem = Helpers.ReflectionHelper.GetStoreItem(TheIstruction.arguments.GetType());
+        @if (storeItem.Item1)
+        {
+            <div class="the-store-container">
+                <div class="row">
+                    <div class="col-md-1 p-0 pt-2">
+                        @if (StoreIsChecked())
+                        {
+                            <input checked class="form-check" type="checkbox" @onchange="HandleStoreOptionChange" />
+                        }
+                        else
+                        {
+                            <input class="form-check" type="checkbox" @onchange="HandleStoreOptionChange" />
+                        }
+                    </div>
+
+                    <div class="col-md-3 pt-2">
+                        Set to Store ?
+                        @storeItem.Item2
+                    </div>
+
+                    <div class="col-md-4">
+                        @if (StoreIsChecked() && TheIstruction.store != null)
+                        {
+                            <input placeholder="Store Key Reference" value="@TheIstruction.store.name"
+                                   class="form-control d-inline"
+                                   type="text" name="key_name" @onchange="OnStoreKeyCreate" />
+                        }
+                    </div>
+
+                    <div class="col-md-4 pt-2">
+                        @if (StoreIsChecked() && TheIstruction.store != null)
+                        {
+                            <label style="color:darkred;"> @StoreError </label>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+</div>
+
+<style>
+
+    .the-instruction {
+        border: 1px dashed black;
+    }
+
+    .the-instructions-arguments {
+        background: #c6c6c6;
+    }
+
+    .the-btn-remove {
+        font-size: 11px;
+        font-weight: bold;
+        margin: 3px;
+    }
+
+    .the-store-container {
+        background: #c6c6c6;
+        border: 1px dashed black;
+        border-top: 0;
+        cursor: pointer;
+        padding: 10px;
+        color: white;
+        height: 70px;
+    }
+
+    .the-config-table {
+        width: 100%;
+    }
+
+</style>
