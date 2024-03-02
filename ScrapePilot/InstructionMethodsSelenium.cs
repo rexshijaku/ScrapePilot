@@ -240,7 +240,7 @@ namespace ScrapePilot
             return attr_val;
         }
 
-        public void Wait_File_Download(ChromeDriver driver, DownloadFile args)
+        public void Wait_File_Download(ChromeDriver driver, WaitForDownload args)
         {
             if (Store.IsAvailable(args.Src))
             {

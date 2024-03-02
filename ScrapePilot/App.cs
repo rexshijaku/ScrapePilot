@@ -139,7 +139,7 @@ namespace ScrapePilot
                                 }
                                 break;
                             case SeleniumInstuctionType.WAIT_FILE_DOWNLOAD:
-                                _seleniumActions.Wait_File_Download(driver, instruction.GetArguments<DownloadFile>());
+                                _seleniumActions.Wait_File_Download(driver, instruction.GetArguments<WaitForDownload>());
                                 break;
                             default:
                                 break;

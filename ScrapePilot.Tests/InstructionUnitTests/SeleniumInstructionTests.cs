@@ -182,7 +182,7 @@ namespace ScrapePilotTests.InstructionTests
             string fullPath = Path.Combine(outputDir, filePath);
             string fileContent = "This is the content of the file.";
 
-            DownloadFile downloadFile = new DownloadFile()
+            WaitForDownload downloadFile = new WaitForDownload()
             { Src = filePath };
 
             // Act

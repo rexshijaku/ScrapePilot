@@ -5,7 +5,7 @@ using ScrapePilot.Constants.InstructionType;
 namespace ScrapePilot.Models.Instruction.Selenium
 {
     [InstructionDetails(type: SeleniumInstuctionType.WAIT_FILE_DOWNLOAD, driver: RecipeDriverType.SELENIUM)]
-    public class DownloadFile
+    public class WaitForDownload
     {
         [InstructionArgumentDetails(attributeType: AttributeType.StoreKeyOrRawValue)]
         [InstructionArgumentClientDetails(name: "Source", description: "The URL source where the file is residing.")]
