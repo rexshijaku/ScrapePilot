@@ -8,6 +8,17 @@ Scrape Pilot uses a JSON file as an input, which contains a list of recipes that
 <i>This documentation serves as a broad introduction to Recipes, offering guidance on their creation and outlining their key components. For a more in-depth understanding and to explore specific functionalities, we suggest delving into the code. </i>
 
 ### Usage
+
+##### Install by a manual download: 
+Download the repository and add ScrapePilot as a Project Reference to your project.
+
+##### NuGet
+You can also install it from NuGet by running the following command:
+```html
+dotnet add package ScrapePilot
+```
+
+##### Simple example
 ```csharp
  var app = new ScrapePilot.App(); // Create an instance of the ScrapePilot
  
