@@ -177,7 +177,7 @@ It contains a type that indicates the expected result type of the recipe. See th
   "output": { 
     "type": "table_data_json",
     "value": [ "#a_variable_name" ]
-  } // The Specified Output
+  } 
 }
 ```
 
