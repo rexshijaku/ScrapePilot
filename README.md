@@ -121,7 +121,7 @@ A List of Instructions or Steps that each Recipe should follow.
 }
 ```
 
-Tip: In the code, each Instruction, is decorated with <b>InstructionDetails</b> attribute (see an example <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Models/Instruction/Html/ExtractAttr.cs'>here</a>), and this is where is documented whether the instruction should be stored or not. It also has a description which shows which field is stored. When using the tool introduced at the beginning, it will take care of such things and prevent the user from creating inappropriate instruction parts.
+Tip: In the code, each Instruction, is decorated with <b>InstructionDetails</b> attribute (see an example <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Models/Instruction/Html/ExtractAttr.cs'>here</a>), and this is where is documented whether the instruction should be stored or not. It also has a description which shows which field is stored. When using the <a href='http://152.70.176.144/'>tool</a>, it will take care of such things and prevent the user from creating inappropriate instruction parts.
 
 #### [Instruction] Type
 There are different Instruction Types for each Driver. These can be found  <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Constants/InstructionType'> here </a>.
@@ -170,7 +170,7 @@ The implementation of functions is located <a href='https://github.com/rexshijak
 
 
 #### The Output
-It contains a type, which shows what type the expected recipe result is. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> The Output also has the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), variables, or independent functions as well.
+It contains a type that indicates the expected result type of the recipe. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> The Output has also the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), defined variables, or independent functions as well.
 
 ```js
 {
