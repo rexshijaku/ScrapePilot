@@ -3,7 +3,7 @@
 This library helps to scrape web content in a guided and user-friendly way. It aims to simplify repetitive and complex scraping tasks by combining and abstracting the functionality offered by HTMLAgilityPack and Selenium with the extended C# I/O tasks.
 
 ## How it works
-Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its own instructions. An Instruction represents a single unit of tasks and is made of Arguments. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> which alleviates the recipe creation process.
+Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its own instructions. An Instruction represents a single unit of tasks and is made of Arguments. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> (<a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot.Client'>the ScrapePilot.Client Project</a>) which alleviates the recipe creation process.
 
 ### Usage
 ```csharp
@@ -33,7 +33,7 @@ The App Constructor of the Scrape Pilot may take an IConfigurationSection as a p
 
 ### The Main Recipe Structure
 
-The Main Recipe is the recipe that contains all subrecipes. It has a store and variables that are used globally.
+The Main Recipe is the recipe that contains subrecipes. It has a global store and variables.
 
 #### The Store
 The store is an in-memory storage that contains the results of the storable instructions. In technical terms, it is an implementation of a key-value C# Dictionary<String, String>, where the key corresponds to the 'name' property of the 'store' object. Once a value is stored, it can be used in subsequent steps throughout the script. However, certain instructions, such as basic tab changes, are void and may not necessitate storing their results.
@@ -185,7 +185,7 @@ And in the recipe:
 
 
 #### The Output
-It contains a type, which shows what type the expected recipe result is. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> . The Output also has the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), variables, or independent functions as well.
+It contains a type, which shows what type the expected recipe result is. See the possible Output Types <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/OutputType.cs'>here.</a> The Output also has the value part, which contains a list of fragments that are concatenated to create the final result. This list can include handwritten values (raw), variables, or independent functions as well.
 
 ```js
 {
@@ -198,8 +198,38 @@ It contains a type, which shows what type the expected recipe result is. See the
   } // The Specified Output
 }
 ```
+
+### Support
+For general questions about ScrapePilot, tweet at @rexshijaku or write me an email at rexhepshijaku@gmail.com.
+
+### Author
+##### Rexhep Shijaku
+ - Email : rexhepshijaku@gmail.com
+ - Twitter : https://twitter.com/rexshijaku
+
 ### Acknowledgments
-Special thanks to Trygg Mat Tracking (TMT) for supporting this project.
+Special thanks to <a href='https://www.tm-tracking.org/'>Trygg Mat Tracking (TMT)</a> for supporting this project.
+
+### Contributing
+We welcome contributions from everyone! Here are a few ways you can help improve this project:
+
+Reporting Bugs: If you encounter any bugs or unexpected behavior, please open an issue on GitHub. Be sure to include as much detail as possible, including steps to reproduce the issue.
+
+Suggesting Enhancements: Have an idea for a new feature or improvement? Feel free to open an issue to discuss it, or even better, submit a pull request with your proposed changes.
+
+Submitting Pull Requests: Found a bug and know how to fix it? Want to add a new feature? Pull requests are welcome! Please follow the guidelines below:
+
+Fork the repository and create your branch from the main.
+Make your changes, ensuring they follow our coding conventions and style guide.
+Write tests for any new functionality and ensure all tests pass.
+Update the documentation to reflect your changes if necessary.
+Open a pull request, describing the changes you've made.
+
+Documentation: Improving the documentation is always appreciated. If you notice areas where the documentation could be clearer or more comprehensive, please let us know or submit a pull request with your proposed changes.
+
+Spread the Word: If you find this project useful, consider sharing it with others who might benefit from it. You can also star the repository on GitHub to show your support.
+
+By contributing to this project, you agree to abide by the Code of Conduct. Thank you for helping to make this project better!
 
 ### License
 MIT License
