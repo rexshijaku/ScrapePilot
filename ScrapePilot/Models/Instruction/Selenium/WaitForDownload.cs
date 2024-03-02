@@ -8,7 +8,7 @@ namespace ScrapePilot.Models.Instruction.Selenium
     public class WaitForDownload
     {
         [InstructionArgumentDetails(attributeType: AttributeType.StoreKeyOrRawValue)]
-        [InstructionArgumentClientDetails(name: "Source", description: "The URL source where the file is residing.")]
+        [InstructionArgumentClientDetails(name: "Source", description: "The File Name (with extension) which will be downloaded to the Output Directory.")]
         public required string Src { get; set; }
     }
 }

@@ -11,7 +11,7 @@
 
         #region Other
         public const string AUTHOR_NAME = "Rexhep Shijaku";
-        public const string PROJECTS_GITHUB_URL = "https://github.com/rexshijaku";
+        public const string PROJECTS_GITHUB_URL = "https://github.com/rexshijaku/ScrapePilot";
         public const string AUTHORS_GITHUB_URL = "https://github.com/rexshijaku";
         #endregion
     }
