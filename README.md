@@ -3,7 +3,7 @@
 This library helps to scrape web content in a guided and user-friendly way. It aims to simplify repetitive and complex scraping tasks by combining and abstracting the functionality offered by HTMLAgilityPack and Selenium with the extended C# I/O tasks.
 
 ## How it works
-Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its own instructions. An Instruction represents a single unit of tasks and is made of Arguments. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> (<a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot.Client'>the ScrapePilot.Client Project</a>) which alleviates the recipe creation process.
+Scrape Pilot uses a JSON file as an input, which contains a list of recipes that guides what Pilot should do, and each recipe has its instructions. An Instruction represents a single unit of task and is made of Arguments. You add multiple Recipes in case you need a <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/RecipeDriverType.cs'>Driver</a> change. The recipe examples can be found in the <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Examples'>Examples</a> folder. Besides, this repo also provides a <a href='http://152.70.176.144/'>tool</a> (<a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot.Client'>the ScrapePilot.Client Project</a>) which alleviates the recipe creation process.
 
 ### Usage
 ```csharp
@@ -36,7 +36,7 @@ The App Constructor of the Scrape Pilot may take an IConfigurationSection as a p
 The Main Recipe is the recipe that contains subrecipes. It has a global store and variables.
 
 #### The Store
-The store is an in-memory storage that contains the results of the storable instructions. In technical terms, it is an implementation of a key-value C# Dictionary<String, String>, where the key corresponds to the 'name' property of the 'store' object. Once a value is stored, it can be used in subsequent steps throughout the script. However, certain instructions, such as basic tab changes, are void and may not necessitate storing their results.
+The store is an in-memory storage that contains the results of the storable instructions. In technical terms, it is an implementation of a key-value C# Dictionary<String, String>, where the key corresponds to the 'name' property of the 'store' object. Once a value is stored, it can be used in subsequent steps throughout the script. However, certain instructions, such as basic tab changes are void and may not necessitate storing their results.
 
 #### A Variable
 An element that can be declared and used within the main JSON file is indicated by a preceding hash (#) string. Once a variable is introduced in a step, it can be used in subsequent steps. See below how '#a_variable_example' is used as part of an output string, it was introduced earlier when used to store an instruction result. Note that if a variable is used without the hash (#), it won't be stored in The Store and therefore won't be available when referred to.
@@ -73,14 +73,14 @@ The Main Recipe contains Multiple Recipe Items and gives a single Output at the 
 }
 ```
 
-You can override appsettings.json properties inside the recipe file as below. When overridden, the values of the variables from the appsettings.json will be ignored.
+You can override appsettings.json properties inside the recipe file as below.
 
 ```js
 {
    "recipes": [],
    "configs": { // Override appsettings.json Configuration
       "OutputPath": "some_path",
-      "verbose": false
+      "Verbose": false
    },
    "output": {}
 }
@@ -92,11 +92,11 @@ The Main Components of a single Recipe are:
 - [Instructions] - a List of Instructions or Steps that Recipe should follow
 
 #### [Use]
-This component contains the options where the Driver and its Configuration are specified. The possible Driver Types are located in <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/RecipeDriverType.cs'>Constants.RecipeDriverType.cs</a>, and configuration properties for each Driver type are specified in individual files within <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Models/Configs'> Models.Configs </a>.
+This component contains the options where the Driver and its Configuration are specified. The possible Driver Types are located in <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/RecipeDriverType.cs'>Constants.RecipeDriverType.cs</a>, and configuration properties for each Driver type are specified separately in <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Models/Configs'> Models.Configs </a>.
 
 ```js
 "use": {
-   "driver": "HTMLap", // The Driver Type Used in Recipe is HtmlAguilitiPack
+   "driver": "HTMLap", // The Driver Type Used in the Recipe is HtmlAguilitiPack
    "configs": {  // The Driver Configuration
     "EncodingName": "utf-8"
    }
@@ -121,10 +121,10 @@ A List of Instructions or Steps that each Recipe should follow.
 }
 ```
 
-Tip: In the code, each Instruction, is decorated with <b>InstructionDetails</b> attribute (see an example <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Models/Instruction/Html/ExtractAttr.cs'>here</a>), and this is where is documented whether the instruction should be stored or not. It also has a description which shows which field is stored. When using the tool introduced at the beginning, it will take care of such things and prevent the user from creating inappropriate parts of instructions.
+Tip: In the code, each Instruction, is decorated with <b>InstructionDetails</b> attribute (see an example <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Models/Instruction/Html/ExtractAttr.cs'>here</a>), and this is where is documented whether the instruction should be stored or not. It also has a description which shows which field is stored. When using the tool introduced at the beginning, it will take care of such things and prevent the user from creating inappropriate instruction parts.
 
 #### [Instruction] Type
-There are different Instruction Types for each Driver. These can be found  <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Constants/InstructionType'> here </a> for each driver.
+There are different Instruction Types for each Driver. These can be found  <a href='https://github.com/rexshijaku/ScrapePilot/tree/master/ScrapePilot/Constants/InstructionType'> here </a>.
 
 #### [Instruction] Arguments
 Each Instruction Type has different arguments, in the code you can see the Instruction Properties (which are the arguments) inside the Type of Instruction that you want to use. The previous example used the arguments for the ExtractAttr Instruction which resides in the  Models.Instruction.Selenium namespace.
@@ -137,33 +137,18 @@ Constraints | The Conditions that the resulting value must respect
 Store-Name | The Name of the Variable which will contain the Instruction Result 
 
 #### [Instruction] Value
-Some Instruction Types may have Arguments that use predefined constant values, meaning they can't accept variables or hand-written values, these instruction types can be found in Constants.InstructionValue.{DriverName} folders. An example of this can be the Switch Tab Instruction Type which only navigates to specified browser tabs such as first, last, etc.
+Some Instruction Types may have Arguments that use predefined constant values, which means that they can't accept variables or hand-written values, these instruction types can be found in Constants.InstructionValue.{DriverName} folders. An example of this can be the Switch Tab Instruction Type in Selenium which only navigates to specified browser tabs such as first, last, etc.
 
 ### Functions
-Similar to variables, Functions can also be employed in constructing the result of an Instruction, the value of a specific type of Argument, or the Main Output value. The value of the function can be utilized in the mentioned points, and when that specific point is processed by the parser it will get what the function outputs. An example of the use of the Functions is shown below.
+Similar to variables, Functions can also be employed in constructing the result of an Instruction, the value of a specific type of Argument, or the Main Output value. The value of the function can be utilized in the mentioned cases, and when a specific case is processed by the parser it will get what the function outputs. An example of the use of the Functions is shown below.
 
 #### Independent Functions
-These types of functions are not dependent on any other argument or variable inside the instruction or script. Examples of such functions are The Current DateTime or Blank Space Generator. The full list is available in Constants.IndependentFunctions namespace.
+These types of functions are not dependent on any other argument or variable inside the instruction or script. Examples of such functions are The Current DateTime or Blank Space Generator. The full list is available in <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/IndependentFunctions.cs'>Constants.IndependentFunctions</a>.
 
 #### Dependent Functions
-These types of functions are dependent on the value of some other property or variable. Note the relationship between the function name and the used argument is specified inside GetArgumentables() function of the specified Instruction. Currently, only one argument is supported. The full list of possible Dependent Functions is available in Constants.DependentFunctions namespace. 
+These types of functions are dependent on the value of some other property or variable. Note that the relationship between the function name and the used argument is specified inside the GetArgumentables() function of the specified Instruction. Currently, only one argument is supported. The full list of possible Dependent Functions is available in <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Constants/DependentFunctions.cs'> Constants.DependentFunctions</a> namespace. 
 
-````csharp
-[InstructionArgumentDetails(attributeType: AttributeType.StoreKeyOrRawValue)]
-[InstructionArgumentClientDetails(name: "From", description: "The path where the file is located.")]
-public required string From { get; set; }
-
-// The Argument that holds the path where a file should be stored and is constructed depending on the FROM argument of the same Instruction
-// The TO parameter, as you can see can use an independent function or a dependent function that processes the value of the To
-
-[InstructionArgumentDetails(attributeType: AttributeType.ListAsRawOrFromStore)]
-[InstructionArgumentClientDetails(name: "To", description: "The new path where the file should be moved.")]
-[CanUseDependentFunction(referToField: nameof(From))]
-[CanUseInDependentFunction]
-public List<string>? To { get; set; }
-
-````
-And in the recipe:
+The implementation of functions is located <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/Models/Functions.cs'>here</a>. And an example of use of the functions is presented in the following example:
 ```js
  // An Example where Independent and Dependent functions are used
  {
