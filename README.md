@@ -31,8 +31,6 @@ Scrape Pilot uses a JSON file as an input, which contains a list of recipes that
 ### appsettings.json
 The App Constructor of the Scrape Pilot may take an IConfigurationSection as a parameter. This Configuration is optional. Please refer to the <a href='https://github.com/rexshijaku/ScrapePilot/blob/master/ScrapePilot/AppConfiguration.cs'> AppConfiguration.cs </a> to see what properties you may use in your appsettings.json for the Scrape Pilot.
 
-<br>
-
 ### The Main Recipe Structure
 
 The Main Recipe is the recipe that contains subrecipes. It has a global store and variables. 
@@ -163,7 +161,7 @@ The implementation of the Functions is located <a href='https://github.com/rexsh
 
  // let assume that fn_space outputs ' ' and fn_dateTime-yyyyMMdd = '20231007' 
  // #extracted_file_url = 'some_folder_path/file_name.csv'
- // and fn_fileName-fromFullName = 'file_name.csv' // note that this function uses the From property
+ // and fn_fileName-fromFullName = 'file_name.csv'
  // The To Property would be 'Test 20231007file_name.csv'
 ```
 
