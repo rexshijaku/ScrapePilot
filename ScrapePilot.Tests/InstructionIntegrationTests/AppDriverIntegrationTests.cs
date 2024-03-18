@@ -15,9 +15,10 @@ namespace ScrapePilotTests.InstructionIntegrationTests
             InstructionMethodsAppDriver instructionMethodsAppDriver = new InstructionMethodsAppDriver();
             string dummyPDFUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
+            string dummyPdfName = $"dummy-{new Random().Next(1, 10000)}";
             string outputFolder = Path.GetTempPath();
-            string downloadPath = Path.Combine(outputFolder, "dummy.pdf");
-            string moveToPath = Path.Combine(outputFolder, "integration-tests-dummy-moved.pdf");
+            string downloadPath = Path.Combine(outputFolder, $"{dummyPdfName}.pdf");
+            string moveToPath = Path.Combine(outputFolder, $"integration-tests-{dummyPdfName}-moved.pdf");
 
             // Act
             await instructionMethodsAppDriver.DownloadAFile(new DownloadAFile()

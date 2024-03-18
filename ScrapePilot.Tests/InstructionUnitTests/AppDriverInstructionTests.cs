@@ -13,9 +13,10 @@ namespace ScrapePilotTests.InstructionUnitTests
         public async void Downloading_A_File_OK()
         {
             // Arrange
+            string dummyPdfName = $"dummy-{new Random().Next(1, 10000)}";
             InstructionMethodsAppDriver instructionMethodsAppDriver = new InstructionMethodsAppDriver();
             string theUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
-            string downloadPath = Path.Combine(Path.GetTempPath(), "dummy.pdf");
+            string downloadPath = Path.Combine(Path.GetTempPath(), $"{dummyPdfName}.pdf");
 
             // Act
             await instructionMethodsAppDriver.DownloadAFile(new DownloadAFile()
